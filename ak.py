@@ -16,6 +16,8 @@ def arg_parse():
                         help="output file name")
     parser.add_argument('-w', '--overwrite',
                         help="overwrites the file, if it does exist", action="store_true")
+    parser.add_argument('-q', '--quiet',
+                        help="less verbose output", action="store_true")
     parser.add_argument('--version', help="shows the version number",
                         action="version", version='%(prog)s v{version}'.format(version=__version__))
     args = parser.parse_args()
@@ -31,6 +33,8 @@ def main():
                     pass
                 elif event.key == keyboard.Key.space:
                     file.write(' ')
+                elif event.key == keyboard.Key.enter:
+                    file.write('\n')
                 elif str(event.key).startswith('Key'):
                     file.write(
                         "[" + str(event.key).split(".")[1].upper() + "]")
@@ -38,13 +42,15 @@ def main():
                     signal_number = int(str(event.key).split('<')[1].split('>')[0])
                     numpad_number = signal_number - 96
                     key = '[NumPad' + str(numpad_number) + ']' if numpad_number != 14 else '.'
-                    file.write(key)
+                    content = str(numpad_number) if arg_parse().quiet else key
+                    file.write(content)
                 else:
                     file.write(str(event.key).split("'")[1])
 
 
 if __name__ == '__main__':
     try:
+        print('\033[90m\033[1mRunning...\033[0m')
         main()
     except KeyboardInterrupt:
         print('\033[91m\033[1mProgram Terminated\033[0m')
