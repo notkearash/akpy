@@ -26,7 +26,9 @@ options:
 
 ```
 ## Examples
-`python3 ak.py -o log.txt -w`
+```
+python3 ak.py -o log.txt -w
+```
 
 ## Notes
 + Dirty and quick project
