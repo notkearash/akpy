@@ -11,7 +11,7 @@ That's it!
 
 ## Help message
 ```
-usage: akpy [-h] [-o OUTPUT] [-w] [--version]
+usage: akpy [-h] [-o OUTPUT] [-w] [-q] [-k S] [--version]
 
 Another Keylogger. Python.
 
@@ -20,6 +20,8 @@ options:
   -o OUTPUT, --output OUTPUT
                         output file name
   -w, --overwrite       overwrites the file, if it does exist
+  -q, --quiet           less verbose output
+  -k S, --kill S        kills the program after specified time (seconds)
   --version             shows the version number
 
 ```
