@@ -26,6 +26,8 @@ def arg_parser():
                         action="version", version='%(prog)s v{version}'.format(version=__version__))
     args = parser.parse_args()
     return args
+args = arg_parser()
+opt = 'w' if args.overwrite else 'x'
 
 
 def throw_err(msg):
@@ -51,7 +53,7 @@ def file_parser(file, key_event):
         key = '[NumPad' + str(numpad_number) + \
             ']' if numpad_number != 14 else '.'
         content = str(
-            numpad_number) if arg_parser().quiet else key
+            numpad_number) if args.quiet else key
         file.write(content)
     else:
         file.write(str(key_event.key).split("'")[1])
@@ -59,7 +61,7 @@ def file_parser(file, key_event):
 
 def file_validator():
     try:
-        open(arg_parser().output, 'x')
+        open(args.output, opt)
     except FileExistsError:
         throw_err('File exists! specify -w to overwrite.')
     except TypeError:
@@ -70,9 +72,8 @@ def file_validator():
 
 
 def main():
-    opt = 'w' if arg_parser().overwrite else 'x'
     with keyboard.Events() as events:
-        with open(arg_parser().output, opt) as file:
+        with open(args.output, opt) as file:
             for event in events:
                 file_parser(file, event)
 
@@ -80,14 +81,15 @@ def main():
 if __name__ == '__main__':
     file_validator()
     try:
-        if arg_parser().kill:
+        if args.kill:
             process = multiprocessing.Process(target=main, name="Main")
+            print('\033[90m\033[1mRunning...\033[0m')
             process.start()
-            time.sleep(float(arg_parser().kill))
+            time.sleep(float(args.kill))
             process.terminate()
             process.join()
         else:
+            print('\033[90m\033[1mRunning...\033[0m')
             main()
-        print('\033[90m\033[1mRunning...\033[0m')
     except KeyboardInterrupt:
         throw_err('Program Terminated\033[0m')
