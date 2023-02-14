@@ -26,14 +26,18 @@ def arg_parser():
                         action="version", version='%(prog)s v{version}'.format(version=__version__))
     args = parser.parse_args()
     return args
+
+
 args = arg_parser()
 opt = 'w' if args.overwrite else 'x'
 
 
-def throw_err(msg):
+def throw_err(msg, show_help=True, exits=True):
     print('\033[91m\033[1m' + msg + '\033[0m')
-    print('\033[1mIf you need help try -h.\033[0m')
-    exit(1)
+    if show_help:
+        print('\033[1mIf you need help try -h.\033[0m')
+    if exits:
+        exit(1)
 
 
 def file_parser(file, key_event):
@@ -92,4 +96,4 @@ if __name__ == '__main__':
             print('\033[90m\033[1mRunning...\033[0m')
             main()
     except KeyboardInterrupt:
-        throw_err('Program Terminated\033[0m')
+        throw_err('Program Terminated\033[0m', False)
